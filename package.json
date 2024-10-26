@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lockitemfront": "file:",
     "vue": "^3.5.12"
   },
   "devDependencies": {
