@@ -1,10 +1,21 @@
 <template>
-  <div class="login-page"> <!-- Añadido un contenedor de página -->
-    <div class="login-container">
-      <h2>Login to your account</h2>
-      <p>It's great to see you again.</p>
-      
-      <form @submit.prevent="handleSubmit">
+  <div class="signup-page"> <!-- Añadido un contenedor de página -->
+    <div class="signup-container">
+      <h2>Create an account</h2>
+      <p>Let’s create your account.</p>
+
+      <form @submit.prevent="handleSignup">
+        <!-- Campo de Nombre Completo -->
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input
+            type="text"
+            id="fullname"
+            v-model="fullName"
+            placeholder="Enter your full name"
+          />
+        </div>
+
         <!-- Campo de Email -->
         <div class="form-group">
           <label for="email">Email</label>
@@ -18,30 +29,24 @@
           />
           <span v-if="emailError" class="error-message">Please enter a valid email address</span>
         </div>
-        
+
         <!-- Campo de Contraseña -->
         <div class="form-group">
           <label for="password">Password</label>
           <input
-            :type="showPassword ? 'text' : 'password'"
+            type="password"
             id="password"
             v-model="password"
             placeholder="Enter your password"
           />
-          <span class="toggle-password" @click="togglePassword">
-            <img :src="showPassword ? 'eye-open-icon.png' : 'eye-closed-icon.png'" alt="Toggle Password Visibility" />
-          </span>
         </div>
-        
-        <!-- Botón de Iniciar Sesión -->
-        <button :disabled="!isFormValid" class="login-button">Login</button>
-        
-        <!-- Enlaces para Olvidar Contraseña y Registro -->
-        <p class="forgot-password">
-          Forgot your password? <a href="#">Reset your password</a>
-        </p>
-        <p class="sign-up">
-          Don’t have an account? <router-link to="/signup">Sign Up</router-link>
+
+        <!-- Botón de Crear Cuenta -->
+        <button :disabled="!isFormValid" class="signup-button">Create an Account</button>
+
+        <!-- Enlace para Cambiar a Login -->
+        <p class="login-link">
+          Already have an account? <router-link to="/login">Log In</router-link>
         </p>
       </form>
     </div>
@@ -50,18 +55,18 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "Signup",
   data() {
     return {
+      fullName: "",
       email: "",
       password: "",
       emailError: false,
-      showPassword: false,
     };
   },
   computed: {
     isFormValid() {
-      return this.email && this.password && !this.emailError;
+      return this.fullName && this.email && this.password && !this.emailError;
     },
   },
   methods: {
@@ -69,11 +74,8 @@ export default {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       this.emailError = !emailPattern.test(this.email);
     },
-    togglePassword() {
-      this.showPassword = !this.showPassword;
-    },
-    handleSubmit() {
-      alert("Form Submitted");
+    handleSignup() {
+      alert("Account Created");
     },
   },
 };
@@ -81,21 +83,21 @@ export default {
 
 <style scoped>
 /* Contenedor de toda la página */
-.login-page {
+.signup-page {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+  min-height: 100vh; /* Ocupa toda la altura de la ventana */
   background-color: #f5f5f5; /* Color de fondo opcional */
 }
 
-/* Estilos generales del formulario */
-.login-container {
+/* Estilos del formulario */
+.signup-container {
   max-width: 400px;
   width: 100%;
   padding: 2em;
   text-align: left;
-  font-family: 'Inter', sans-serif; /* Cambia a 'General Sans' si tienes la fuente */
+  font-family: 'Inter', sans-serif;
   background-color: #f5f5f5;
   color: #1A1A1A;
 }
@@ -143,9 +145,10 @@ input:focus {
   color: red;
   font-size: 12px;
   margin-top: 4px;
+  min-height: 16px;
 }
 
-.login-button {
+.signup-button {
   width: 100%;
   padding: 12px;
   background-color: #000;
@@ -155,39 +158,24 @@ input:focus {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  
   margin-top: 24px;
 }
 
-.login-button:disabled {
+.signup-button:disabled {
   background-color: #000000;
 }
 
-.forgot-password,
-.sign-up {
+.login-link {
   font-size: 12px;
   color: #666;
   text-align: center;
   margin-top: 12px;
 }
 
-.forgot-password a,
-.sign-up a {
+.login-link a {
   color: #000;
   text-decoration: underline;
   cursor: pointer;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-/* Añade este estilo al final */
-.toggle-password {
-  display: none;
 }
 </style>
