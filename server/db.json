@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "fullName": "Jane Doe",
+      "email": "janedoe@example.com",
+      "password": "password123",
+      "birthDate": "1992-05-14",
+      "gender": "female",
+      "phoneNumber": "1234567890"
+    },
+    {
+      "id": "2",
+      "fullName": "Giak",
+      "email": "giakroma@gmail.com",
+      "password": "9090",
+      "birthDate": "2004-04-19",
+      "gender": "male",
+      "phoneNumber": "991193394"
+    },
+    {
+      "id": "e249",
+      "fullName": "prueba1",
+      "email": "prueba@gmail.com",
+      "password": "4321",
+      "birthDate": "2024-11-13",
+      "gender": "female",
+      "phoneNumber": "987654321"
+    }
+  ]
+}

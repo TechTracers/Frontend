@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page"> <!-- Añadido un contenedor de página -->
+  <div class="login-page">
     <div class="login-container">
       <h2>Login to your account</h2>
       <p>It's great to see you again.</p>
@@ -36,10 +36,14 @@
         <!-- Botón de Iniciar Sesión -->
         <button :disabled="!isFormValid" class="login-button">Login</button>
         
+        <!-- Mensaje de Error -->
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+        
         <!-- Enlaces para Olvidar Contraseña y Registro -->
         <p class="forgot-password">
-          Forgot your password? <a href="#">Reset your password</a>
-        </p>
+  Forgot your password? 
+  <router-link to="/changepass">Reset your password</router-link>
+</p>
         <p class="sign-up">
           Don’t have an account? <router-link to="/signup">Sign Up</router-link>
         </p>
@@ -49,6 +53,9 @@
 </template>
 
 <script>
+import AuthService from '../services/AuthService';
+import { useRouter } from 'vue-router';
+
 export default {
   name: "Login",
   data() {
@@ -57,6 +64,7 @@ export default {
       password: "",
       emailError: false,
       showPassword: false,
+      errorMessage: "", // Mensaje de error para el login
     };
   },
   computed: {
@@ -72,8 +80,15 @@ export default {
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
-    handleSubmit() {
-      alert("Form Submitted");
+    async handleSubmit() {
+      try {
+        // Llamamos al servicio de autenticación para iniciar sesión
+        const user = await AuthService.login(this.email, this.password);
+        localStorage.setItem('user', JSON.stringify(user)); // Guardamos el usuario en localStorage
+        this.$router.push('/home'); // Redirigimos a la página de inicio
+      } catch (error) {
+        this.errorMessage = error.message || 'Login failed. Please try again.';
+      }
     },
   },
 };

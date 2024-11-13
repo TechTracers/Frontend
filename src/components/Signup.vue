@@ -1,5 +1,5 @@
 <template>
-  <div class="signup-page"> <!-- Añadido un contenedor de página -->
+  <div class="signup-page">
     <div class="signup-container">
       <h2>Create an account</h2>
       <p>Let’s create your account.</p>
@@ -41,6 +41,41 @@
           />
         </div>
 
+        <!-- Campo de Fecha de Nacimiento -->
+        <div class="form-group">
+          <label for="birthdate">Birth Date</label>
+          <input
+            type="date"
+            id="birthdate"
+            v-model="birthDate"
+          />
+        </div>
+
+        <!-- Campo de Género -->
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" v-model="gender">
+            <option value="" disabled>Select your gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Campo de Número de Teléfono -->
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            v-model="phoneNumber"
+            placeholder="Enter your phone number"
+            @input="validatePhoneNumber"
+            :class="{ error: phoneError }"
+          />
+          <span v-if="phoneError" class="error-message">Please enter a valid phone number</span>
+        </div>
+
         <!-- Botón de Crear Cuenta -->
         <button :disabled="!isFormValid" class="signup-button">Create an Account</button>
 
@@ -48,6 +83,9 @@
         <p class="login-link">
           Already have an account? <router-link to="/login">Log In</router-link>
         </p>
+        
+        <!-- Mensaje de Error -->
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
     </div>
   </div>
@@ -55,27 +93,87 @@
 
 <script>
 export default {
-  name: "Signup",
   data() {
     return {
-      fullName: "",
-      email: "",
-      password: "",
+      fullName: '',
+      email: '',
+      password: '',
+      birthDate: '',
+      gender: '',
+      phoneNumber: '',
       emailError: false,
+      phoneError: false,
+      errorMessage: '',
     };
   },
   computed: {
     isFormValid() {
-      return this.fullName && this.email && this.password && !this.emailError;
+      return (
+        this.fullName &&
+        this.email &&
+        !this.emailError &&
+        this.password &&
+        this.birthDate &&
+        this.gender &&
+        this.phoneNumber &&
+        !this.phoneError
+      );
     },
   },
   methods: {
     validateEmail() {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      this.emailError = !emailPattern.test(this.email);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      this.emailError = !emailRegex.test(this.email);
     },
-    handleSignup() {
-      alert("Account Created");
+    validatePhoneNumber() {
+      const phoneRegex = /^[0-9]{9}$/; // Ejemplo para 9 dígitos
+      this.phoneError = !phoneRegex.test(this.phoneNumber);
+    },
+    async handleSignup() {
+      if (!this.isFormValid) {
+        this.errorMessage = 'Please fill out all fields correctly.';
+        return;
+      }
+
+      const userData = {
+        fullName: this.fullName,
+        email: this.email,
+        password: this.password,
+        birthDate: this.birthDate,
+        gender: this.gender,
+        phoneNumber: this.phoneNumber,
+      };
+
+      try {
+        const response = await fetch('http://localhost:3000/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to register. Please try again.');
+        }
+
+        // Limpiar los datos y redirigir
+        this.resetForm();
+        this.$router.push('/login');
+      } catch (error) {
+        this.errorMessage = error.message;
+      }
+    },
+    resetForm() {
+      this.fullName = '';
+      this.email = '';
+      this.password = '';
+      this.birthDate = '';
+      this.gender = '';
+      this.phoneNumber = '';
+      this.emailError = false;
+      this.phoneError = false;
+      this.errorMessage = '';
     },
   },
 };
@@ -87,8 +185,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* Ocupa toda la altura de la ventana */
-  background-color: #f5f5f5; /* Color de fondo opcional */
+  min-height: 100vh;
+  background-color: #f5f5f5;
 }
 
 /* Estilos del formulario */
@@ -126,7 +224,7 @@ label {
   display: block;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -135,9 +233,10 @@ input {
   outline: none;
   transition: border-color 0.3s;
   color: #333;
+  box-sizing: border-box;
 }
 
-input:focus {
+input:focus, select:focus {
   border-color: #000;
 }
 

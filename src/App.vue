@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view> <!-- Esto es necesario para mostrar el componente según la ruta -->
+    <router-view></router-view> <!-- Esto muestra el componente según la ruta -->
   </div>
 </template>
 
@@ -9,5 +9,8 @@
 </script>
 
 <style scoped>
-/* Estilos opcionales */
+/* Aplicamos la fuente "Inter" a toda la app */
+* {
+  font-family: 'Inter', sans-serif;
+}
 </style>
