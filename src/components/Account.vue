@@ -4,8 +4,8 @@
       <nav class="navbar">
         <div class="logo">LockItem</div>
         <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Search</a></li>
+          <li><router-link to="/home">Home</router-link></li>
+          <li><router-link to="/search">Search</router-link></li>
           <li><router-link to="/account">Account</router-link></li>
         </ul>
       </nav>
@@ -13,7 +13,9 @@
       <!-- Título de la sección de cuenta y botón de logout -->
       <div class="header">
         <h2>Account</h2>
-        <button @click="logout" class="logout-button">Logout</button>
+        <button @click="logout" class="logout-button">
+          <i class="fa-solid fa-right-from-bracket fa-rotate-180"></i> Logout
+        </button>
       </div>
   
       <div class="account-container">
@@ -84,9 +86,10 @@
   </template>
   
   <script>
-  import AuthService from '../services/AuthService';
-  import axios from 'axios';
   import profileImage from '@/assets/profile-placeholder.png'; // Importa la imagen desde assets
+import '@fortawesome/fontawesome-free/css/all.css';
+import axios from 'axios';
+import AuthService from '../services/AuthService';
   
   export default {
     name: 'Account',
@@ -170,6 +173,17 @@
   .nav-links a:hover {
     text-decoration: underline;
   }
+
+  textarea {
+    width: 100%; /* For textarea fields if needed */
+    padding: 0.75em;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+    resize: vertical; /* Allow vertical resizing */
+}
   
   /* Estilo de la página principal */
   .account-page {
@@ -183,8 +197,7 @@
   .header {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    max-width: 800px;
+    width: 80%;
     margin-bottom: 1em;
   }
   
@@ -209,13 +222,9 @@
   
   .view-section, .edit-section {
     flex: 1;
-    max-width: 380px;
-    max-height: 5000px;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    justify-content: flex-start; /* Asegura la alineación superior dentro de cada sección */
-
+    width: 100%; /* Full width of the parent container */
+    max-width: none; /* Remove max-width constraint */
+    text-align: left;
   }
   
   .view-section {
@@ -237,6 +246,7 @@
   }
   
   .form-group {
+    width: 100%; /* Make the group fill the section width */
     margin-bottom: 1em;
   }
   
@@ -248,12 +258,13 @@
   }
   
   input, select {
-    width: 100%;
-    padding: 0.75em;
+    width: 100%; /* Ensure input and select take full width */
+    padding: 0.75em; /* Add padding for better UX */
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 4px;
     outline: none;
+    box-sizing: border-box; /* Include padding and border in width calculation */
   }
   
   input[disabled], select[disabled] {
