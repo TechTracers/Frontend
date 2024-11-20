@@ -82,29 +82,29 @@
         }
       },
       async resetPassword() {
-        if (this.newPassword !== this.confirmPassword) {
-          this.errorMessage = 'Passwords do not match.';
-          return;
-        }
-  
-        try {
-          const response = await fetch(`http://localhost:3000/users/${this.userId}`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ password: this.newPassword }),
-          });
-  
-          if (response.ok) {
-            this.$router.push('/login'); // Redirigir a la página de login tras éxito
-          } else {
-            this.errorMessage = 'Failed to reset password. Please try again.';
-          }
-        } catch (error) {
-          this.errorMessage = 'An error occurred. Please try again.';
-        }
-      },
+  if (this.newPassword !== this.confirmPassword) {
+    this.errorMessage = 'Passwords do not match.';
+    return;
+  }
+
+  try {
+    const token = this.user.token; // Asume que el token está guardado
+    const response = await axios.put(`https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/${this.userId}`, {
+      password: this.newPassword
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (response.status === 200) {
+      this.$router.push('/login'); // Redirigir al login
+    } else {
+      throw new Error('Failed to reset password. Please try again.');
+    }
+  } catch (error) {
+    this.errorMessage = error.response.data.message || 'An error occurred. Please try again.';
+  }
+},
+
     },
   };
   </script>

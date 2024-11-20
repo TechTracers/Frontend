@@ -23,7 +23,7 @@
           <form @submit.prevent>
             <div class="form-group">
               <label>Full Name</label>
-              <input type="text" :value="user.fullName" disabled />
+              <input type="text" :value="user.name" disabled />
             </div>
             <div class="form-group">
               <label>Email Address</label>
@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="tel" :value="user.phoneNumber" disabled />
+              <input type="tel" :value="user.phone" disabled />
             </div>
             <button @click="toggleEditMode" class="edit-button">Edit</button>
           </form>
@@ -54,7 +54,7 @@
           <form @submit.prevent="saveChanges">
             <div class="form-group">
               <label>Full Name</label>
-              <input type="text" v-model="editableUser.fullName" />
+              <input type="text" v-model="editableUser.name" />
             </div>
             <div class="form-group">
               <label>Email Address</label>
@@ -74,7 +74,7 @@
             </div>
             <div class="form-group">
               <label>Phone Number</label>
-              <input type="tel" v-model="editableUser.phoneNumber" />
+              <input type="tel" v-model="editableUser.phone" />
             </div>
             <button type="submit" class="submit-button">Submit</button>
           </form>
@@ -102,16 +102,29 @@
       this.loadUserData();
     },
     methods: {
-      loadUserData() {
-        this.editableUser = { ...this.user }; // Copiar datos del usuario para edición
+      async loadUserData() {
+        try {
+          const userId = this.user.id; // Asegúrate de tener el ID del usuario guardado en el local storage
+          const token = this.user.token; // Token guardado previamente
+          const response = await axios.get(`https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+
+          this.user = response.data; // Actualiza la información del usuario
+          this.editableUser = { ...this.user }; // Prepara los datos para la edición
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
       },
       toggleEditMode() {
         this.isEditMode = !this.isEditMode;
       },
       async saveChanges() {
         try {
-          // Actualizar el usuario en db.json a través de json-server
-          await axios.put(`http://localhost:3000/users/${this.user.id}`, this.editableUser);
+          const token = this.user.token;
+          await axios.put(`https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/${this.user.id}`, this.editableUser, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
           this.user = { ...this.editableUser };
           localStorage.setItem('user', JSON.stringify(this.user)); // Actualizar en localStorage
           this.isEditMode = false;
@@ -126,7 +139,6 @@
     },
   };
   </script>
-  
   <style scoped>
   /* Barra de navegación */
   .navbar {

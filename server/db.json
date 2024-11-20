@@ -26,6 +26,15 @@
       "birthDate": "2024-11-13",
       "gender": "female",
       "phoneNumber": "987654321"
+    },
+    {
+      "id": "bcc7",
+      "fullName": "prueba2",
+      "email": "prueba2@example.com",
+      "password": "1111",
+      "birthDate": "2024-11-05",
+      "gender": "male",
+      "phoneNumber": "111111111"
     }
   ]
 }

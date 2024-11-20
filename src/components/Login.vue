@@ -5,18 +5,15 @@
       <p>It's great to see you again.</p>
       
       <form @submit.prevent="handleSubmit">
-        <!-- Campo de Email -->
+        <!-- Campo de Nombre de Usuario -->
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="username">Username</label>
           <input
-            type="email"
-            id="email"
-            v-model="email"
-            placeholder="Enter your email address"
-            @input="validateEmail"
-            :class="{ error: emailError }"
+            type="text"
+            id="username"
+            v-model="username"
+            placeholder="Enter your username"
           />
-          <span v-if="emailError" class="error-message">Please enter a valid email address</span>
         </div>
         
         <!-- Campo de Contraseña -->
@@ -41,9 +38,9 @@
         
         <!-- Enlaces para Olvidar Contraseña y Registro -->
         <p class="forgot-password">
-  Forgot your password? 
-  <router-link to="/changepass">Reset your password</router-link>
-</p>
+          Forgot your password? 
+          <router-link to="/changepass">Reset your password</router-link>
+        </p>
         <p class="sign-up">
           Don’t have an account? <router-link to="/signup">Sign Up</router-link>
         </p>
@@ -53,46 +50,54 @@
 </template>
 
 <script>
-import AuthService from '../services/AuthService';
-import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 export default {
   name: "Login",
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
-      emailError: false,
       showPassword: false,
-      errorMessage: "", // Mensaje de error para el login
+      errorMessage: "",
     };
   },
   computed: {
     isFormValid() {
-      return this.email && this.password && !this.emailError;
+      return this.username && this.password;
     },
   },
   methods: {
-    validateEmail() {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      this.emailError = !emailPattern.test(this.email);
-    },
-    togglePassword() {
-      this.showPassword = !this.showPassword;
-    },
-    async handleSubmit() {
-      try {
-        // Llamamos al servicio de autenticación para iniciar sesión
-        const user = await AuthService.login(this.email, this.password);
-        localStorage.setItem('user', JSON.stringify(user)); // Guardamos el usuario en localStorage
-        this.$router.push('/home'); // Redirigimos a la página de inicio
-      } catch (error) {
-        this.errorMessage = error.message || 'Login failed. Please try again.';
+  async handleSubmit() {
+    try {
+      const response = await axios.post('/api/v1/users/login', {
+        username: this.username,
+        password: this.password
+      });
+
+      // Comprueba si se recibió un token
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token); // Almacena el token
+        localStorage.setItem('user', JSON.stringify(response.data)); // Opcional: guarda también los datos del usuario
+        this.$router.push('/home'); // Redirige a la página principal
+      } else {
+        throw new Error('Login failed. No token received.');
       }
-    },
+    } catch (error) {
+      console.error("Error during login:", error);
+      if (error.response) {
+        this.errorMessage = error.response.data.message || `Login failed (Status code: ${error.response.status})`;
+      } else {
+        this.errorMessage = 'Network error occurred. Please try again later.';
+      }
+    }
   },
+},
 };
 </script>
+
+
+
 
 <style scoped>
 /* Contenedor de toda la página */
