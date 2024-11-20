@@ -1,10 +1,11 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { Component } from 'vue';
-import Login from '../components/Login.vue';
-import Signup from '../components/Signup.vue';
-import Home from '../components/Home.vue';
-import Account from '../components/Account.vue'; 
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import Account from '../components/Account.vue';
 import ChangePass from '../components/ChangePass.vue';
+import Home from '../components/Home.vue';
+import Login from '../components/Login.vue';
+import Search from '../components/Search.vue';
+import Signup from '../components/Signup.vue';
 
 
 
@@ -37,6 +38,11 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     redirect: '/login',
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: Search as Component
   },
 ];
 
