@@ -27,5 +27,272 @@
       "gender": "female",
       "phoneNumber": "987654321"
     }
+  ],
+  "stores": [
+    {
+      "id": 1,
+      "name": "Store 1",
+      "products": [
+        {
+          "id": 1,
+          "product": {
+            "id": 1,
+            "name": "Smartphone X",
+            "description": "A powerful smartphone with cutting-edge features.",
+            "imageUrl": "https://source.unsplash.com/200x200/?smartphone",
+            "category": {
+              "id": 1,
+              "name": "Electronics"
+            }
+          },
+          "price": 799.99,
+          "iotUID": "123ABC"
+        },
+        {
+          "id": 2,
+          "product": {
+            "id": 2,
+            "name": "Wireless Headphones",
+            "description": "Noise-cancelling headphones with premium sound quality.",
+            "imageUrl": "https://source.unsplash.com/200x200/?headphones",
+            "category": {
+              "id": 1,
+              "name": "Electronics"
+            }
+          },
+          "price": 299.99,
+          "iotUID": "456DEF"
+        },
+        {
+          "id": 3,
+          "product": {
+            "id": 3,
+            "name": "Gaming Laptop",
+            "description": "High-performance laptop for gaming and productivity.",
+            "imageUrl": "https://source.unsplash.com/200x200/?laptop",
+            "category": {
+              "id": 1,
+              "name": "Electronics"
+            }
+          },
+          "price": 1299.99,
+          "iotUID": "789GHI"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Store 2",
+      "products": [
+        {
+          "id": 4,
+          "product": {
+            "id": 4,
+            "name": "Coffee Maker",
+            "description": "Brew your perfect cup of coffee every morning.",
+            "imageUrl": "https://source.unsplash.com/200x200/?coffee-maker",
+            "category": {
+              "id": 2,
+              "name": "Home Appliances"
+            }
+          },
+          "price": 89.99,
+          "iotUID": "234JKL"
+        },
+        {
+          "id": 5,
+          "product": {
+            "id": 5,
+            "name": "Vacuum Cleaner",
+            "description": "Efficient and lightweight vacuum cleaner for daily use.",
+            "imageUrl": "https://source.unsplash.com/200x200/?vacuum-cleaner",
+            "category": {
+              "id": 2,
+              "name": "Home Appliances"
+            }
+          },
+          "price": 159.99,
+          "iotUID": "567MNO"
+        },
+        {
+          "id": 6,
+          "product": {
+            "id": 6,
+            "name": "Microwave Oven",
+            "description": "Compact microwave oven with multiple cooking modes.",
+            "imageUrl": "https://source.unsplash.com/200x200/?microwave",
+            "category": {
+              "id": 2,
+              "name": "Home Appliances"
+            }
+          },
+          "price": 119.99,
+          "iotUID": "890PQR"
+        }
+      ]
+    }
+  ],
+  "products": [
+  {
+    "id": 1,
+    "name": "Regular Fit Slogan",
+    "description": "A stylish and comfortable slogan tee.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Slogan",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1190,
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 45,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 2,
+    "name": "Regular Fit Polo",
+    "description": "A classic polo shirt for all occasions.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Polo",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1100,
+    "stock": 15,
+    "discount": 52,
+    "rating": 4.7,
+    "reviews": 30,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 3,
+    "name": "Regular Fit V-Neck",
+    "description": "Comfortable V-neck t-shirt for casual wear.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+V-Neck",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1290,
+    "stock": 5,
+    "rating": 4.2,
+    "reviews": 20,
+    "sizes": ["S", "M"]
+  },
+  {
+    "id": 4,
+    "name": "Regular Fit Black",
+    "description": "Black t-shirt with a regular fit.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Black",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1690,
+    "stock": 8,
+    "rating": 4.8,
+    "reviews": 35,
+    "sizes": ["L", "XL"]
+  },
+  {
+    "id": 5,
+    "name": "Regular Fit Pink",
+    "description": "Pink t-shirt for a vibrant look.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Pink",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1190,
+    "stock": 12,
+    "rating": 4.6,
+    "reviews": 25,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 6,
+    "name": "Slim Fit Jeans",
+    "description": "Modern slim-fit jeans for everyday use.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Slim+Fit+Jeans",
+    "category": {
+      "id": 2,
+      "name": "Bottoms"
+    },
+    "price": 2490,
+    "stock": 20,
+    "rating": 4.4,
+    "reviews": 50,
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "id": 7,
+    "name": "Chino Pants",
+    "description": "Smart chino pants with a tailored fit.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Chino+Pants",
+    "category": {
+      "id": 2,
+      "name": "Bottoms"
+    },
+    "price": 1890,
+    "stock": 25,
+    "rating": 4.5,
+    "reviews": 38,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 8,
+    "name": "Denim Jacket",
+    "description": "Classic denim jacket with a timeless design.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Denim+Jacket",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 3490,
+    "stock": 10,
+    "rating": 4.7,
+    "reviews": 70,
+    "sizes": ["M", "L"]
+  },
+  {
+    "id": 9,
+    "name": "Hoodie",
+    "description": "Cozy hoodie for cold weather.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Hoodie",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 1990,
+    "stock": 15,
+    "rating": 4.8,
+    "reviews": 55,
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "id": 10,
+    "name": "Sneakers",
+    "description": "Stylish sneakers for casual outings.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Sneakers",
+    "category": {
+      "id": 4,
+      "name": "Footwear"
+    },
+    "price": 4990,
+    "stock": 12,
+    "rating": 4.9,
+    "reviews": 100,
+    "sizes": ["7", "8", "9", "10"]
+  }
+],
+  "productCategories": [
+    {
+      "id": 1,
+      "name": "Sportswear"
+    },
+    {
+      "id": 2,
+      "name": "Footwear"
+    }
   ]
 }
