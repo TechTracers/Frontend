@@ -283,8 +283,113 @@
     "rating": 4.9,
     "reviews": 100,
     "sizes": ["7", "8", "9", "10"]
+  },
+  {
+    "id": 11,
+    "name": "Leather Jacket",
+    "description": "Premium leather jacket for a stylish look.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Leather+Jacket",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 5490,
+    "stock": 7,
+    "rating": 4.9,
+    "reviews": 75,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 12,
+    "name": "Track Pants",
+    "description": "Lightweight track pants for fitness enthusiasts.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Track+Pants",
+    "category": {
+      "id": 2,
+      "name": "Bottoms"
+    },
+    "price": 1590,
+    "stock": 20,
+    "rating": 4.4,
+    "reviews": 45,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 13,
+    "name": "Running Shoes",
+    "description": "Durable running shoes with excellent grip.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Running+Shoes",
+    "category": {
+      "id": 4,
+      "name": "Footwear"
+    },
+    "price": 3490,
+    "stock": 12,
+    "rating": 4.8,
+    "reviews": 95,
+    "sizes": ["7", "8", "9", "10", "11"]
+  },
+  {
+    "id": 14,
+    "name": "Baseball Cap",
+    "description": "Trendy baseball cap for casual wear.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Baseball+Cap",
+    "category": {
+      "id": 5,
+      "name": "Accessories"
+    },
+    "price": 690,
+    "stock": 30,
+    "rating": 4.3,
+    "reviews": 25,
+    "sizes": ["One Size"]
+  },
+  {
+    "id": 15,
+    "name": "Wool Sweater",
+    "description": "Cozy wool sweater for winter days.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Wool+Sweater",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 2190,
+    "stock": 10,
+    "rating": 4.6,
+    "reviews": 40,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 16,
+    "name": "Tank Top",
+    "description": "Breathable tank top for summer wear.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Tank+Top",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 890,
+    "stock": 25,
+    "rating": 4.1,
+    "reviews": 35,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 17,
+    "name": "Flip Flops",
+    "description": "Comfortable flip flops for casual outings.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Flip+Flops",
+    "category": {
+      "id": 4,
+      "name": "Footwear"
+    },
+    "price": 490,
+    "stock": 50,
+    "rating": 4.2,
+    "reviews": 20,
+    "sizes": ["7", "8", "9", "10"]
   }
-],
+  ],
   "productCategories": [
     {
       "id": 1,

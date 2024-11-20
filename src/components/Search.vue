@@ -34,33 +34,31 @@
                <h3>{{ selectedProduct.name }}</h3>
                <img :src="selectedProduct.imageUrl" :alt="selectedProduct.name" />
                <p><strong>Price:</strong> $ {{ selectedProduct.price }}</p>
-               <p><strong>Stock:</strong></p>
-               <input type="number" v-model.number="selectedProduct.stock" min="0" />
-               <button @click="updateStock">Update Stock</button>
+               <p><strong>Stock:</strong> {{ selectedProduct.stock }}</p>
+               <p><strong>Description:</strong> {{ selectedProduct.description }}</p>
             </div>
          </div>
       </div>
    </div>
 </template>
 
-
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
-   name: 'Search',
+   name: "Search",
    data() {
       return {
          products: [], // List of all products
          filteredProducts: [], // List of products matching the search query
-         searchQuery: '', // Query entered in the search bar
+         searchQuery: "", // Query entered in the search bar
          selectedProduct: null // Product selected for preview
       };
    },
    watch: {
       searchQuery(newQuery) {
          // Filter products based on the search query
-         this.filteredProducts = this.products.filter(product =>
+         this.filteredProducts = this.products.filter((product) =>
             product.name.toLowerCase().includes(newQuery.toLowerCase())
          );
       }
@@ -68,26 +66,15 @@ export default {
    methods: {
       async fetchProducts() {
          try {
-            const response = await axios.get('http://localhost:3000/products');
+            const response = await axios.get("http://localhost:3000/products");
             this.products = response.data;
             this.filteredProducts = this.products; // Initially, show all products
          } catch (error) {
-            console.error('Error fetching products:', error);
+            console.error("Error fetching products:", error);
          }
       },
       selectProduct(product) {
-         this.selectedProduct = { ...product }; // Copy the selected product
-      },
-      async updateStock() {
-         try {
-            await axios.put(
-               `http://localhost:3000/products/${this.selectedProduct.id}`,
-               this.selectedProduct
-            );
-            alert('Stock updated successfully!');
-         } catch (error) {
-            console.error('Error updating stock:', error);
-         }
+         this.selectedProduct = product; // Set the selected product
       }
    },
    mounted() {
@@ -95,7 +82,6 @@ export default {
    }
 };
 </script>
-
 
 <style scoped>
 /* Navbar Styles */
@@ -222,27 +208,12 @@ export default {
    margin-bottom: 1em;
 }
 
-.product-preview input {
-   width: 80px;
-   text-align: center;
-   padding: 0.5em;
-   font-size: 16px;
-   border: 1px solid #ddd;
-   border-radius: 4px;
+.product-preview p {
+   margin: 0.5em 0;
 }
 
-.product-preview button {
-   display: block;
-   margin: 1em auto 0;
-   padding: 0.5em 1em;
-   background-color: #000;
-   color: white;
-   border: none;
-   border-radius: 4px;
-   cursor: pointer;
-}
-
-.product-preview button:hover {
-   background-color: #333;
+.product-preview h3 {
+   margin-bottom: 1em;
+   font-size: 18px;
 }
 </style>
