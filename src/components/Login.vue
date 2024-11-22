@@ -3,47 +3,37 @@
     <div class="login-container">
       <h2>Login to your account</h2>
       <p>It's great to see you again.</p>
-      
-      <form @submit.prevent="handleSubmit">
-        <!-- Campo de Email -->
+
+      <form @submit.prevent="handleLogin">
+        <!-- Campo de Nombre de Usuario -->
         <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            v-model="email"
-            placeholder="Enter your email address"
-            @input="validateEmail"
-            :class="{ error: emailError }"
-          />
-          <span v-if="emailError" class="error-message">Please enter a valid email address</span>
+          <label for="username">Username</label>
+          <input type="text" id="username" v-model="username" placeholder="Enter your username" />
         </div>
-        
+
         <!-- Campo de Contraseña -->
         <div class="form-group">
           <label for="password">Password</label>
-          <input
-            :type="showPassword ? 'text' : 'password'"
-            id="password"
-            v-model="password"
-            placeholder="Enter your password"
-          />
+          <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password"
+            placeholder="Enter your password" />
           <span class="toggle-password" @click="togglePassword">
             <img :src="showPassword ? 'eye-open-icon.png' : 'eye-closed-icon.png'" alt="Toggle Password Visibility" />
           </span>
         </div>
-        
+
         <!-- Botón de Iniciar Sesión -->
-        <button :disabled="!isFormValid" class="login-button">Login</button>
-        
+        <button :disabled="!username || !password" class="login-button">
+          Login
+        </button>
+
         <!-- Mensaje de Error -->
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        
+
         <!-- Enlaces para Olvidar Contraseña y Registro -->
         <p class="forgot-password">
-  Forgot your password? 
-  <router-link to="/changepass">Reset your password</router-link>
-</p>
+          Forgot your password?
+          <router-link to="/changepass">Reset your password</router-link>
+        </p>
         <p class="sign-up">
           Don’t have an account? <router-link to="/signup">Sign Up</router-link>
         </p>
@@ -53,46 +43,60 @@
 </template>
 
 <script>
-import AuthService from '../services/AuthService';
-import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 export default {
-  name: "Login",
   data() {
     return {
-      email: "",
-      password: "",
-      emailError: false,
+      username: '',
+      password: '',
+      errorMessage: '',
       showPassword: false,
-      errorMessage: "", // Mensaje de error para el login
     };
   },
-  computed: {
-    isFormValid() {
-      return this.email && this.password && !this.emailError;
-    },
-  },
   methods: {
-    validateEmail() {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      this.emailError = !emailPattern.test(this.email);
-    },
-    togglePassword() {
-      this.showPassword = !this.showPassword;
-    },
-    async handleSubmit() {
+    async handleLogin() {
       try {
-        // Llamamos al servicio de autenticación para iniciar sesión
-        const user = await AuthService.login(this.email, this.password);
-        localStorage.setItem('user', JSON.stringify(user)); // Guardamos el usuario en localStorage
-        this.$router.push('/home'); // Redirigimos a la página de inicio
+        const response = await axios.post(
+          'https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/login',
+          {
+            username: this.username,
+            password: this.password,
+          }
+        );
+
+        // Desestructura la respuesta
+        const { id, token, username, name, lastname, email, phone, role } = response.data;
+
+        // Guarda el token y los datos del usuario
+        localStorage.setItem('authToken', token);
+        localStorage.setItem(
+          'user',
+          JSON.stringify({ id, username, name, lastname, email, phone, role })
+        );
+
+        console.log('Login successful:', response.data);
+        console.log('Saved user to localStorage:', JSON.parse(localStorage.getItem('user')));
+
+        // Redirige al usuario a la página principal
+        console.log('JWT Token:', localStorage.getItem('authToken'));
+        this.$router.push('/home');
       } catch (error) {
-        this.errorMessage = error.message || 'Login failed. Please try again.';
+        console.error('Login error:', error);
+        this.errorMessage = error.response
+          ? `${error.response.data.message} (Status code: ${error.response.status})`
+          : 'Invalid username or password. Please try again.';
       }
     },
   },
 };
 </script>
+
+
+
+
+
+
 
 <style scoped>
 /* Contenedor de toda la página */
@@ -100,8 +104,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
-  background-color: #f5f5f5; /* Color de fondo opcional */
+  min-height: 100vh;
+  /* Asegura que ocupe toda la altura de la pantalla */
+  background-color: #f5f5f5;
+  /* Color de fondo opcional */
 }
 
 /* Estilos generales del formulario */
@@ -110,7 +116,8 @@ export default {
   width: 100%;
   padding: 2em;
   text-align: left;
-  font-family: 'Inter', sans-serif; /* Cambia a 'General Sans' si tienes la fuente */
+  font-family: 'Inter', sans-serif;
+  /* Cambia a 'General Sans' si tienes la fuente */
   background-color: #f5f5f5;
   color: #1A1A1A;
 }

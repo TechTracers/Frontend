@@ -16,13 +16,8 @@
       <div class="inventory-section">
         <h2>Inventory</h2>
         <div class="inventory-grid">
-          <div
-            v-for="product in products"
-            :key="product.id"
-            class="inventory-item"
-            @click="selectProduct(product)"
-          >
-            <img :src="product.imageUrl" :alt="product.name" />
+          <div v-for="product in products" :key="product.id" class="inventory-item" @click="selectProduct(product)">
+            <img :src="product.imageUrl || 'https://via.placeholder.com/150'" :alt="product.name" />
             <p class="product-name">{{ product.name }}</p>
             <p class="product-price">$ {{ product.price }}</p>
           </div>
@@ -31,24 +26,18 @@
 
       <!-- Product Detail Section -->
       <div v-if="selectedProduct" class="product-detail">
-        <img :src="selectedProduct.imageUrl" :alt="selectedProduct.name" class="product-detail-image" />
+        <img :src="selectedProduct.imageUrl || 'https://via.placeholder.com/150'" :alt="selectedProduct.name"
+          class="product-detail-image" />
         <h3>{{ selectedProduct.name }}</h3>
         <p class="rating">
-          ⭐ {{ selectedProduct.rating }}/5 ({{ selectedProduct.reviews }} reviews)
+          ⭐ {{ selectedProduct.rating || "N/A" }}/5 ({{ selectedProduct.reviews || 0 }} reviews)
         </p>
-        <p><strong>Stock:</strong> Available ({{ selectedProduct.stock }} in stock)</p>
-        <p><strong>Choose size:</strong></p>
-        <div class="size-options">
-          <button v-for="size in selectedProduct.sizes" :key="size" class="size-option">
-            {{ size }}
-          </button>
-        </div>
+        <p><strong>Stock:</strong> {{ selectedProduct.stock || 0 }} in stock</p>
         <p class="product-price">Price: $ {{ selectedProduct.price }}</p>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -64,14 +53,31 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await axios.get("http://localhost:3000/products");
-        this.products = response.data;
+        const token = localStorage.getItem("authToken"); // Get the JWT token
+        if (!token) {
+          console.error("No token found. Redirecting to login.");
+          this.$router.push("/login");
+          return;
+        }
+
+        console.log("JWT Token being used:", token); // Debugging the token
+
+        const response = await axios.get(
+          "https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/products",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add Authorization header
+            },
+          }
+        );
+        this.products = response.data; // Assign the fetched products
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching products:", error.response?.data || error.message);
+        alert("Failed to fetch products. Please try again.");
       }
     },
     selectProduct(product) {
-      this.selectedProduct = product;
+      this.selectedProduct = product; // Set the selected product
     }
   },
   mounted() {
@@ -134,12 +140,14 @@ export default {
 
 /* Inventory Section */
 .inventory-section {
-  flex: 3; /* Occupies 3 parts of the available space */
+  flex: 3;
+  /* Occupies 3 parts of the available space */
 }
 
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* Six products per row */
+  grid-template-columns: repeat(6, 1fr);
+  /* Six products per row */
   gap: 1em;
 }
 
@@ -174,7 +182,8 @@ export default {
 
 /* Product Detail Section */
 .product-detail {
-  flex: 1; /* Occupies 1 part of the available space */
+  flex: 1;
+  /* Occupies 1 part of the available space */
   border-left: 2px solid #ddd;
   padding-left: 1em;
 }
@@ -191,30 +200,9 @@ export default {
   margin-top: 1em;
 }
 
-.size-options {
-  display: flex;
-  gap: 0.5em;
-  margin-top: 0.5em;
-}
-
-.size-option {
-  padding: 0.5em 1em;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.size-option:hover {
-  background-color: #e0e0e0;
-}
-
 .product-price {
   font-size: 18px;
   font-weight: bold;
   margin-top: 1em;
 }
 </style>
-
-
