@@ -1,0 +1,412 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "fullName": "Jane Doe",
+      "email": "janedoe@example.com",
+      "password": "password123",
+      "birthDate": "1992-05-14",
+      "gender": "female",
+      "phoneNumber": "1234567890"
+    },
+    {
+      "id": "2",
+      "fullName": "Giak",
+      "email": "giakroma@gmail.com",
+      "password": "9090",
+      "birthDate": "2004-04-19",
+      "gender": "male",
+      "phoneNumber": "991193394"
+    },
+    {
+      "id": "e249",
+      "fullName": "prueba1",
+      "email": "prueba@gmail.com",
+      "password": "4321",
+      "birthDate": "2024-11-13",
+      "gender": "female",
+      "phoneNumber": "987654321"
+    },
+    {
+      "id": "bcc7",
+      "fullName": "prueba2",
+      "email": "prueba2@example.com",
+      "password": "1111",
+      "birthDate": "2024-11-05",
+      "gender": "male",
+      "phoneNumber": "111111111"
+    }
+  ],
+  "stores": [
+    {
+      "id": 1,
+      "name": "Store 1",
+      "products": [
+        {
+          "id": 1,
+          "product": {
+            "id": 1,
+            "name": "Smartphone X",
+            "description": "A powerful smartphone with cutting-edge features.",
+            "imageUrl": "https://source.unsplash.com/200x200/?smartphone",
+            "category": {
+              "id": 1,
+              "name": "Electronics"
+            }
+          },
+          "price": 799.99,
+          "iotUID": "123ABC"
+        },
+        {
+          "id": 2,
+          "product": {
+            "id": 2,
+            "name": "Wireless Headphones",
+            "description": "Noise-cancelling headphones with premium sound quality.",
+            "imageUrl": "https://source.unsplash.com/200x200/?headphones",
+            "category": {
+              "id": 1,
+              "name": "Electronics"
+            }
+          },
+          "price": 299.99,
+          "iotUID": "456DEF"
+        },
+        {
+          "id": 3,
+          "product": {
+            "id": 3,
+            "name": "Gaming Laptop",
+            "description": "High-performance laptop for gaming and productivity.",
+            "imageUrl": "https://source.unsplash.com/200x200/?laptop",
+            "category": {
+              "id": 1,
+              "name": "Electronics"
+            }
+          },
+          "price": 1299.99,
+          "iotUID": "789GHI"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Store 2",
+      "products": [
+        {
+          "id": 4,
+          "product": {
+            "id": 4,
+            "name": "Coffee Maker",
+            "description": "Brew your perfect cup of coffee every morning.",
+            "imageUrl": "https://source.unsplash.com/200x200/?coffee-maker",
+            "category": {
+              "id": 2,
+              "name": "Home Appliances"
+            }
+          },
+          "price": 89.99,
+          "iotUID": "234JKL"
+        },
+        {
+          "id": 5,
+          "product": {
+            "id": 5,
+            "name": "Vacuum Cleaner",
+            "description": "Efficient and lightweight vacuum cleaner for daily use.",
+            "imageUrl": "https://source.unsplash.com/200x200/?vacuum-cleaner",
+            "category": {
+              "id": 2,
+              "name": "Home Appliances"
+            }
+          },
+          "price": 159.99,
+          "iotUID": "567MNO"
+        },
+        {
+          "id": 6,
+          "product": {
+            "id": 6,
+            "name": "Microwave Oven",
+            "description": "Compact microwave oven with multiple cooking modes.",
+            "imageUrl": "https://source.unsplash.com/200x200/?microwave",
+            "category": {
+              "id": 2,
+              "name": "Home Appliances"
+            }
+          },
+          "price": 119.99,
+          "iotUID": "890PQR"
+        }
+      ]
+    }
+  ],
+  "products": [
+  {
+    "id": 1,
+    "name": "Regular Fit Slogan",
+    "description": "A stylish and comfortable slogan tee.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Slogan",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1190,
+    "stock": 10,
+    "rating": 4.5,
+    "reviews": 45,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 2,
+    "name": "Regular Fit Polo",
+    "description": "A classic polo shirt for all occasions.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Polo",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1100,
+    "stock": 15,
+    "discount": 52,
+    "rating": 4.7,
+    "reviews": 30,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 3,
+    "name": "Regular Fit V-Neck",
+    "description": "Comfortable V-neck t-shirt for casual wear.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+V-Neck",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1290,
+    "stock": 5,
+    "rating": 4.2,
+    "reviews": 20,
+    "sizes": ["S", "M"]
+  },
+  {
+    "id": 4,
+    "name": "Regular Fit Black",
+    "description": "Black t-shirt with a regular fit.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Black",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1690,
+    "stock": 8,
+    "rating": 4.8,
+    "reviews": 35,
+    "sizes": ["L", "XL"]
+  },
+  {
+    "id": 5,
+    "name": "Regular Fit Pink",
+    "description": "Pink t-shirt for a vibrant look.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Regular+Fit+Pink",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 1190,
+    "stock": 12,
+    "rating": 4.6,
+    "reviews": 25,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 6,
+    "name": "Slim Fit Jeans",
+    "description": "Modern slim-fit jeans for everyday use.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Slim+Fit+Jeans",
+    "category": {
+      "id": 2,
+      "name": "Bottoms"
+    },
+    "price": 2490,
+    "stock": 20,
+    "rating": 4.4,
+    "reviews": 50,
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "id": 7,
+    "name": "Chino Pants",
+    "description": "Smart chino pants with a tailored fit.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Chino+Pants",
+    "category": {
+      "id": 2,
+      "name": "Bottoms"
+    },
+    "price": 1890,
+    "stock": 25,
+    "rating": 4.5,
+    "reviews": 38,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 8,
+    "name": "Denim Jacket",
+    "description": "Classic denim jacket with a timeless design.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Denim+Jacket",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 3490,
+    "stock": 10,
+    "rating": 4.7,
+    "reviews": 70,
+    "sizes": ["M", "L"]
+  },
+  {
+    "id": 9,
+    "name": "Hoodie",
+    "description": "Cozy hoodie for cold weather.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Hoodie",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 1990,
+    "stock": 15,
+    "rating": 4.8,
+    "reviews": 55,
+    "sizes": ["S", "M", "L", "XL"]
+  },
+  {
+    "id": 10,
+    "name": "Sneakers",
+    "description": "Stylish sneakers for casual outings.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Sneakers",
+    "category": {
+      "id": 4,
+      "name": "Footwear"
+    },
+    "price": 4990,
+    "stock": 12,
+    "rating": 4.9,
+    "reviews": 100,
+    "sizes": ["7", "8", "9", "10"]
+  },
+  {
+    "id": 11,
+    "name": "Leather Jacket",
+    "description": "Premium leather jacket for a stylish look.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Leather+Jacket",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 5490,
+    "stock": 7,
+    "rating": 4.9,
+    "reviews": 75,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 12,
+    "name": "Track Pants",
+    "description": "Lightweight track pants for fitness enthusiasts.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Track+Pants",
+    "category": {
+      "id": 2,
+      "name": "Bottoms"
+    },
+    "price": 1590,
+    "stock": 20,
+    "rating": 4.4,
+    "reviews": 45,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 13,
+    "name": "Running Shoes",
+    "description": "Durable running shoes with excellent grip.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Running+Shoes",
+    "category": {
+      "id": 4,
+      "name": "Footwear"
+    },
+    "price": 3490,
+    "stock": 12,
+    "rating": 4.8,
+    "reviews": 95,
+    "sizes": ["7", "8", "9", "10", "11"]
+  },
+  {
+    "id": 14,
+    "name": "Baseball Cap",
+    "description": "Trendy baseball cap for casual wear.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Baseball+Cap",
+    "category": {
+      "id": 5,
+      "name": "Accessories"
+    },
+    "price": 690,
+    "stock": 30,
+    "rating": 4.3,
+    "reviews": 25,
+    "sizes": ["One Size"]
+  },
+  {
+    "id": 15,
+    "name": "Wool Sweater",
+    "description": "Cozy wool sweater for winter days.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Wool+Sweater",
+    "category": {
+      "id": 3,
+      "name": "Outerwear"
+    },
+    "price": 2190,
+    "stock": 10,
+    "rating": 4.6,
+    "reviews": 40,
+    "sizes": ["M", "L", "XL"]
+  },
+  {
+    "id": 16,
+    "name": "Tank Top",
+    "description": "Breathable tank top for summer wear.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Tank+Top",
+    "category": {
+      "id": 1,
+      "name": "T-Shirts"
+    },
+    "price": 890,
+    "stock": 25,
+    "rating": 4.1,
+    "reviews": 35,
+    "sizes": ["S", "M", "L"]
+  },
+  {
+    "id": 17,
+    "name": "Flip Flops",
+    "description": "Comfortable flip flops for casual outings.",
+    "imageUrl": "https://via.placeholder.com/200x200?text=Flip+Flops",
+    "category": {
+      "id": 4,
+      "name": "Footwear"
+    },
+    "price": 490,
+    "stock": 50,
+    "rating": 4.2,
+    "reviews": 20,
+    "sizes": ["7", "8", "9", "10"]
+  }
+  ],
+  "productCategories": [
+    {
+      "id": 1,
+      "name": "Sportswear"
+    },
+    {
+      "id": 2,
+      "name": "Footwear"
+    }
+  ]
+}
