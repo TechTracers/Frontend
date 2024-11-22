@@ -8,33 +8,49 @@
         <!-- Campo de Usuario (username) -->
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" v-model="username" placeholder="Enter your username" />
+          <input type="text" id="username" v-model="username" placeholder="Enter your username" required />
         </div>
         <!-- Campo de Nombre -->
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" id="firstName" v-model="firstName" placeholder="Enter your first name" />
+          <input type="text" id="firstName" v-model="firstName" placeholder="Enter your first name" required />
         </div>
         <!-- Campo de Apellido -->
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" v-model="lastName" placeholder="Enter your last name" />
+          <input type="text" id="lastName" v-model="lastName" placeholder="Enter your last name" required />
         </div>
         <!-- Campo de Email -->
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" placeholder="Enter your email address" @input="validateEmail" :class="{ error: emailError }" />
+          <input
+            type="email"
+            id="email"
+            v-model="email"
+            placeholder="Enter your email address"
+            @input="validateEmail"
+            :class="{ error: emailError }"
+            required
+          />
           <span v-if="emailError" class="error-message">Please enter a valid email address</span>
         </div>
         <!-- Campo de Contraseña -->
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" placeholder="Enter your password" />
+          <input type="password" id="password" v-model="password" placeholder="Enter your password" required />
         </div>
         <!-- Campo de Número de Teléfono -->
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" v-model="phoneNumber" placeholder="Enter your phone number" @input="validatePhoneNumber" :class="{ error: phoneError }" />
+          <input
+            type="tel"
+            id="phone"
+            v-model="phoneNumber"
+            placeholder="Enter your phone number"
+            @input="validatePhoneNumber"
+            :class="{ error: phoneError }"
+            required
+          />
           <span v-if="phoneError" class="error-message">Please enter a valid phone number</span>
         </div>
         <!-- Botón de Crear Cuenta -->
@@ -51,26 +67,34 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      username: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phoneNumber: '',
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
       emailError: false,
       phoneError: false,
-      errorMessage: '',
+      errorMessage: "",
     };
   },
   computed: {
     isFormValid() {
-      return this.username && this.firstName && this.lastName && this.email &&
-             !this.emailError && this.password && this.phoneNumber && !this.phoneError;
+      return (
+        this.username &&
+        this.firstName &&
+        this.lastName &&
+        this.email &&
+        !this.emailError &&
+        this.password &&
+        this.phoneNumber &&
+        !this.phoneError
+      );
     },
   },
   methods: {
@@ -83,50 +107,55 @@ export default {
       this.phoneError = !phoneRegex.test(this.phoneNumber);
     },
     async handleSignup() {
-  if (!this.isFormValid) {
-    this.errorMessage = 'Please fill out all fields correctly.';
-    return;
-  }
-
-  const userData = {
-    username: this.username,
-    password: this.password,
-    name: this.firstName,
-    lastname: this.lastName,
-    email: this.email,
-    phone: this.phoneNumber,
-    role: "NORMAL"
-  };
-
-  try {
-    const response = await axios.post('/api/v1/users', userData, {
-      headers: {
-        'Content-Type': 'application/json'
+      if (!this.isFormValid) {
+        this.errorMessage = "Please fill out all fields correctly.";
+        return;
       }
-    });
 
-    if (response.status === 201) {
-      this.resetForm();
-      this.$router.push('/login');
-    } else {
-      this.errorMessage = `Failed to register with status code: ${response.status}`;
-    }
-  } catch (error) {
-    console.error("Error during signup:", error);
-    this.errorMessage = error.response ? `${error.response.data.message} (Status code: ${error.response.status})` : 'Network error occurred. Please try again later.';
-  }
-}
-,
+      const userData = {
+        username: this.username,
+        password: this.password,
+        name: this.firstName,
+        lastname: this.lastName,
+        email: this.email,
+        phone: this.phoneNumber,
+        role: "NORMAL",
+      };
+
+      try {
+        const response = await axios.post(
+          "https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users",
+          userData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          this.resetForm();
+          this.$router.push("/login");
+        } else {
+          this.errorMessage = `Failed to register with status code: ${response.status}`;
+        }
+      } catch (error) {
+        console.error("Error during signup:", error);
+        this.errorMessage = error.response
+          ? `${error.response.data.message} (Status code: ${error.response.status})`
+          : "Network error occurred. Please try again later.";
+      }
+    },
     resetForm() {
-      this.username = '';
-      this.firstName = '';
-      this.lastName = '';
-      this.email = '';
-      this.password = '';
-      this.phoneNumber = '';
+      this.username = "";
+      this.firstName = "";
+      this.lastName = "";
+      this.email = "";
+      this.password = "";
+      this.phoneNumber = "";
       this.emailError = false;
       this.phoneError = false;
-      this.errorMessage = '';
+      this.errorMessage = "";
     },
   },
 };

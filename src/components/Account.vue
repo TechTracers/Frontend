@@ -1,144 +1,146 @@
 <template>
-    <div class="account-page">
-      <!-- Barra de navegación superior -->
-      <nav class="navbar">
-        <div class="logo">LockItem</div>
-        <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Search</a></li>
-          <li><router-link to="/account">Account</router-link></li>
-        </ul>
-      </nav>
-  
-      <!-- Título de la sección de cuenta y botón de logout -->
-      <div class="header">
-        <h2>Account</h2>
-        <button @click="logout" class="logout-button">Logout</button>
+  <div class="account-page">
+    <!-- Barra de navegación superior -->
+    <nav class="navbar">
+      <div class="logo">LockItem</div>
+      <ul class="nav-links">
+        <li><router-link to="/home">Home</router-link></li>
+        <li><router-link to="/search">Search</router-link></li>
+        <li><router-link to="/account">Account</router-link></li>
+      </ul>
+    </nav>
+
+    <!-- Título de la sección de cuenta y botón de logout -->
+    <div class="header">
+      <h2>Account</h2>
+      <button @click="logout" class="logout-button">Logout</button>
+    </div>
+
+    <div class="account-container">
+      <!-- Información del usuario -->
+      <div class="view-section" v-if="!isEditMode">
+        <img :src="profileImage" alt="Profile Image" class="profile-image" />
+        <form @submit.prevent>
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" :value="user.username" disabled />
+          </div>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" :value="`${user.name} ${user.lastname}`" disabled />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" :value="user.email" disabled />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" :value="user.phone" disabled />
+          </div>
+          <button @click="toggleEditMode" class="edit-button">Edit</button>
+        </form>
       </div>
-  
-      <div class="account-container">
-        <!-- Información del usuario -->
-        <div class="view-section">
-          <img :src="profileImage" alt="Profile Image" class="profile-image">
-          <form @submit.prevent>
-            <div class="form-group">
-              <label>Full Name</label>
-              <input type="text" :value="user.name" disabled />
-            </div>
-            <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" :value="user.email" disabled />
-            </div>
-            <div class="form-group">
-              <label>Date of Birth</label>
-              <input type="date" :value="user.birthDate" disabled />
-            </div>
-            <div class="form-group">
-              <label>Gender</label>
-              <select :value="user.gender" disabled>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Phone Number</label>
-              <input type="tel" :value="user.phone" disabled />
-            </div>
-            <button @click="toggleEditMode" class="edit-button">Edit</button>
-          </form>
-        </div>
-  
-        <!-- Sección de edición -->
-        <div class="edit-section" v-if="isEditMode">
-          <form @submit.prevent="saveChanges">
-            <div class="form-group">
-              <label>Full Name</label>
-              <input type="text" v-model="editableUser.name" />
-            </div>
-            <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" v-model="editableUser.email" />
-            </div>
-            <div class="form-group">
-              <label>Date of Birth</label>
-              <input type="date" v-model="editableUser.birthDate" />
-            </div>
-            <div class="form-group">
-              <label>Gender</label>
-              <select v-model="editableUser.gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Phone Number</label>
-              <input type="tel" v-model="editableUser.phone" />
-            </div>
-            <button type="submit" class="submit-button">Submit</button>
-          </form>
-        </div>
+
+      <!-- Sección de edición -->
+      <div class="edit-section" v-if="isEditMode">
+        <form @submit.prevent="saveChanges">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" v-model="editableUser.username" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" v-model="editableUser.password" placeholder="Enter new password or leave blank" />
+          </div>
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" v-model="editableUser.name" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" v-model="editableUser.lastname" />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" v-model="editableUser.email" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" v-model="editableUser.phone" />
+          </div>
+          <button type="submit" class="submit-button">Save Changes</button>
+          <button @click="toggleEditMode" class="cancel-button">Cancel</button>
+        </form>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import AuthService from '../services/AuthService';
-  import axios from 'axios';
-  import profileImage from '@/assets/profile-placeholder.png'; // Importa la imagen desde assets
-  
-  export default {
-    name: 'Account',
-    data() {
-      return {
-        user: JSON.parse(localStorage.getItem('user')) || {}, // Cargar datos del usuario de localStorage
-        editableUser: {},
-        isEditMode: false,
-        profileImage, // Asigna la imagen importada a una propiedad de datos
-      };
-    },
-    mounted() {
-      this.loadUserData();
-    },
-    methods: {
-      async loadUserData() {
-        try {
-          const userId = this.user.id; // Asegúrate de tener el ID del usuario guardado en el local storage
-          const token = this.user.token; // Token guardado previamente
-          const response = await axios.get(`https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/${userId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+  </div>
+</template>
 
-          this.user = response.data; // Actualiza la información del usuario
-          this.editableUser = { ...this.user }; // Prepara los datos para la edición
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      },
-      toggleEditMode() {
-        this.isEditMode = !this.isEditMode;
-      },
-      async saveChanges() {
-        try {
-          const token = this.user.token;
-          await axios.put(`https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/${this.user.id}`, this.editableUser, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          this.user = { ...this.editableUser };
-          localStorage.setItem('user', JSON.stringify(this.user)); // Actualizar en localStorage
-          this.isEditMode = false;
-        } catch (error) {
-          console.error('Error updating user:', error);
-        }
-      },
-      logout() {
-        AuthService.logout(); // Llamada para manejar el logout
-        this.$router.push('/login');
-      },
+<script>
+import axios from 'axios';
+import profileImage from '@/assets/profile-placeholder.png';
+
+export default {
+  name: 'Account',
+  data() {
+    return {
+      user: JSON.parse(localStorage.getItem('user')) || {}, // Carga los datos del usuario desde localStorage
+      editableUser: {},
+      isEditMode: false,
+      profileImage,
+    };
+  },
+  mounted() {
+    this.editableUser = { ...this.user, password: '' }; // Prepara los datos para la edición, agregando el campo de contraseña
+  },
+  methods: {
+    toggleEditMode() {
+      this.isEditMode = !this.isEditMode;
     },
-  };
-  </script>
+    async saveChanges() {
+  try {
+    const token = localStorage.getItem('authToken');
+    const userId = this.user.id; // Verifica si user.id es correcto
+    console.log('Token:', token);
+    console.log('User ID:', userId);
+
+    const updatedData = { ...this.editableUser };
+
+    // Si el campo de contraseña está vacío, no lo envíes
+    if (!updatedData.password) {
+      delete updatedData.password;
+    }
+
+    console.log('Updated Data:', updatedData);
+
+    const response = await axios.put(
+      `https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/${userId}`,
+      updatedData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    this.user = { ...response.data };
+    localStorage.setItem('user', JSON.stringify(this.user));
+    this.isEditMode = false;
+
+    console.log('User updated successfully:', response.data);
+  } catch (error) {
+    console.error('Error updating user:', error.response?.data || error.message);
+    alert('Failed to update user. Please try again.');
+  }
+},
+    logout() {
+      localStorage.removeItem('authToken'); // Elimina el token de localStorage
+      localStorage.removeItem('user'); // Elimina los datos del usuario
+      this.$router.push('/login'); // Redirige al inicio de sesión
+    },
+  },
+};
+</script>
+
+
   <style scoped>
   /* Barra de navegación */
   .navbar {

@@ -3,8 +3,8 @@
     <div class="login-container">
       <h2>Login to your account</h2>
       <p>It's great to see you again.</p>
-      
-      <form @submit.prevent="handleSubmit">
+
+      <form @submit.prevent="handleLogin">
         <!-- Campo de Nombre de Usuario -->
         <div class="form-group">
           <label for="username">Username</label>
@@ -15,7 +15,7 @@
             placeholder="Enter your username"
           />
         </div>
-        
+
         <!-- Campo de Contraseña -->
         <div class="form-group">
           <label for="password">Password</label>
@@ -26,19 +26,24 @@
             placeholder="Enter your password"
           />
           <span class="toggle-password" @click="togglePassword">
-            <img :src="showPassword ? 'eye-open-icon.png' : 'eye-closed-icon.png'" alt="Toggle Password Visibility" />
+            <img
+              :src="showPassword ? 'eye-open-icon.png' : 'eye-closed-icon.png'"
+              alt="Toggle Password Visibility"
+            />
           </span>
         </div>
-        
+
         <!-- Botón de Iniciar Sesión -->
-        <button :disabled="!isFormValid" class="login-button">Login</button>
-        
+        <button :disabled="!username || !password" class="login-button">
+          Login
+        </button>
+
         <!-- Mensaje de Error -->
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        
+
         <!-- Enlaces para Olvidar Contraseña y Registro -->
         <p class="forgot-password">
-          Forgot your password? 
+          Forgot your password?
           <router-link to="/changepass">Reset your password</router-link>
         </p>
         <p class="sign-up">
@@ -53,48 +58,53 @@
 import axios from 'axios';
 
 export default {
-  name: "Login",
   data() {
     return {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
+      errorMessage: '',
       showPassword: false,
-      errorMessage: "",
     };
   },
-  computed: {
-    isFormValid() {
-      return this.username && this.password;
-    },
-  },
   methods: {
-  async handleSubmit() {
-    try {
-      const response = await axios.post('/api/v1/users/login', {
+    async handleLogin() {
+  try {
+    const response = await axios.post(
+      'https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users/login',
+      {
         username: this.username,
-        password: this.password
-      });
+        password: this.password,
+      }
+    );
 
-      // Comprueba si se recibió un token
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token); // Almacena el token
-        localStorage.setItem('user', JSON.stringify(response.data)); // Opcional: guarda también los datos del usuario
-        this.$router.push('/home'); // Redirige a la página principal
-      } else {
-        throw new Error('Login failed. No token received.');
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      if (error.response) {
-        this.errorMessage = error.response.data.message || `Login failed (Status code: ${error.response.status})`;
-      } else {
-        this.errorMessage = 'Network error occurred. Please try again later.';
-      }
-    }
-  },
+    // Desestructura la respuesta
+    const { id, token, username, name, lastname, email, phone, role } = response.data;
+
+    // Guarda el token y los datos del usuario
+    localStorage.setItem('authToken', token);
+    localStorage.setItem(
+      'user',
+      JSON.stringify({ id, username, name, lastname, email, phone, role })
+    );
+
+    console.log('Login successful:', response.data);
+    console.log('Saved user to localStorage:', JSON.parse(localStorage.getItem('user')));
+
+    // Redirige al usuario a la página principal
+    this.$router.push('/home');
+  } catch (error) {
+    console.error('Login error:', error);
+    this.errorMessage = error.response
+      ? `${error.response.data.message} (Status code: ${error.response.status})`
+      : 'Invalid username or password. Please try again.';
+  }
 },
+  },
 };
 </script>
+
+
+
 
 
 
