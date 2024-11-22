@@ -23,7 +23,7 @@
             <div class="product-grid">
                <div v-for="product in filteredProducts" :key="product.id" class="product-item"
                   @click="selectProduct(product)">
-                  <img :src="product.imageUrl" :alt="product.name" />
+                  <img :src="product.imageUrl || 'https://via.placeholder.com/150'" :alt="product.name" />
                   <p class="product-name">{{ product.name }}</p>
                   <p class="product-price">$ {{ product.price }}</p>
                </div>
@@ -32,7 +32,7 @@
             <!-- Product Preview -->
             <div v-if="selectedProduct" class="product-preview">
                <h3>{{ selectedProduct.name }}</h3>
-               <img :src="selectedProduct.imageUrl" :alt="selectedProduct.name" />
+               <img :src="selectedProduct.imageUrl || 'https://via.placeholder.com/150'" :alt="selectedProduct.name" />
                <p><strong>Price:</strong> $ {{ selectedProduct.price }}</p>
                <p><strong>Stock:</strong> {{ selectedProduct.stock }}</p>
                <p><strong>Description:</strong> {{ selectedProduct.description }}</p>
@@ -66,11 +66,27 @@ export default {
    methods: {
       async fetchProducts() {
          try {
-            const response = await axios.get("http://localhost:3000/products");
+            const token = localStorage.getItem("authToken"); // Get the JWT token
+            if (!token) {
+               console.error("No token found. Redirecting to login.");
+               this.$router.push("/login");
+               return;
+            }
+            console.log("JWT Token being used:", token); // Debugging the token
+
+            const response = await axios.get(
+               "https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/products",
+               {
+                  headers: {
+                     Authorization: `Bearer ${token}`,
+                  },
+               }
+            );
             this.products = response.data;
             this.filteredProducts = this.products; // Initially, show all products
          } catch (error) {
-            console.error("Error fetching products:", error);
+            console.error("Error fetching products:", error.response?.data || error.message);
+            alert("Failed to fetch products. Please try again.");
          }
       },
       selectProduct(product) {
@@ -78,10 +94,11 @@ export default {
       }
    },
    mounted() {
-      this.fetchProducts();
+      this.fetchProducts(); // Fetch products when the component is mounted
    }
 };
 </script>
+
 
 <style scoped>
 /* Navbar Styles */

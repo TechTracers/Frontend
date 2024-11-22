@@ -5,17 +5,21 @@
       <p>Let’s create your account.</p>
 
       <form @submit.prevent="handleSignup">
-        <!-- Campo de Nombre Completo -->
+        <!-- Campo de Usuario (username) -->
         <div class="form-group">
-          <label for="fullname">Full Name</label>
-          <input
-            type="text"
-            id="fullname"
-            v-model="fullName"
-            placeholder="Enter your full name"
-          />
+          <label for="username">Username</label>
+          <input type="text" id="username" v-model="username" placeholder="Enter your username" required />
         </div>
-
+        <!-- Campo de Nombre -->
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" v-model="firstName" placeholder="Enter your first name" required />
+        </div>
+        <!-- Campo de Apellido -->
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" v-model="lastName" placeholder="Enter your last name" required />
+        </div>
         <!-- Campo de Email -->
         <div class="form-group">
           <label for="email">Email</label>
@@ -26,42 +30,15 @@
             placeholder="Enter your email address"
             @input="validateEmail"
             :class="{ error: emailError }"
+            required
           />
           <span v-if="emailError" class="error-message">Please enter a valid email address</span>
         </div>
-
         <!-- Campo de Contraseña -->
         <div class="form-group">
           <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="password"
-            placeholder="Enter your password"
-          />
+          <input type="password" id="password" v-model="password" placeholder="Enter your password" required />
         </div>
-
-        <!-- Campo de Fecha de Nacimiento -->
-        <div class="form-group">
-          <label for="birthdate">Birth Date</label>
-          <input
-            type="date"
-            id="birthdate"
-            v-model="birthDate"
-          />
-        </div>
-
-        <!-- Campo de Género -->
-        <div class="form-group">
-          <label for="gender">Gender</label>
-          <select id="gender" v-model="gender">
-            <option value="" disabled>Select your gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
         <!-- Campo de Número de Teléfono -->
         <div class="form-group">
           <label for="phone">Phone Number</label>
@@ -72,18 +49,16 @@
             placeholder="Enter your phone number"
             @input="validatePhoneNumber"
             :class="{ error: phoneError }"
+            required
           />
           <span v-if="phoneError" class="error-message">Please enter a valid phone number</span>
         </div>
-
         <!-- Botón de Crear Cuenta -->
         <button :disabled="!isFormValid" class="signup-button">Create an Account</button>
-
         <!-- Enlace para Cambiar a Login -->
         <p class="login-link">
           Already have an account? <router-link to="/login">Log In</router-link>
         </p>
-        
         <!-- Mensaje de Error -->
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
@@ -92,29 +67,31 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      fullName: '',
-      email: '',
-      password: '',
-      birthDate: '',
-      gender: '',
-      phoneNumber: '',
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
       emailError: false,
       phoneError: false,
-      errorMessage: '',
+      errorMessage: "",
     };
   },
   computed: {
     isFormValid() {
       return (
-        this.fullName &&
+        this.username &&
+        this.firstName &&
+        this.lastName &&
         this.email &&
         !this.emailError &&
         this.password &&
-        this.birthDate &&
-        this.gender &&
         this.phoneNumber &&
         !this.phoneError
       );
@@ -126,58 +103,68 @@ export default {
       this.emailError = !emailRegex.test(this.email);
     },
     validatePhoneNumber() {
-      const phoneRegex = /^[0-9]{9}$/; // Ejemplo para 9 dígitos
+      const phoneRegex = /^[0-9]{9}$/;
       this.phoneError = !phoneRegex.test(this.phoneNumber);
     },
     async handleSignup() {
       if (!this.isFormValid) {
-        this.errorMessage = 'Please fill out all fields correctly.';
+        this.errorMessage = "Please fill out all fields correctly.";
         return;
       }
 
       const userData = {
-        fullName: this.fullName,
-        email: this.email,
+        username: this.username,
         password: this.password,
-        birthDate: this.birthDate,
-        gender: this.gender,
-        phoneNumber: this.phoneNumber,
+        name: this.firstName,
+        lastname: this.lastName,
+        email: this.email,
+        phone: this.phoneNumber,
+        role: "NORMAL",
       };
 
       try {
-        const response = await fetch('http://localhost:3000/users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData),
-        });
+        const response = await axios.post(
+          "https://lockitem-abaje5g7dagcbsew.canadacentral-01.azurewebsites.net/api/v1/users",
+          userData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-        if (!response.ok) {
-          throw new Error('Failed to register. Please try again.');
+        if (response.status === 201) {
+          this.resetForm();
+          this.$router.push("/login");
+        } else {
+          this.errorMessage = `Failed to register with status code: ${response.status}`;
         }
-
-        // Limpiar los datos y redirigir
-        this.resetForm();
-        this.$router.push('/login');
       } catch (error) {
-        this.errorMessage = error.message;
+        console.error("Error during signup:", error);
+        this.errorMessage = error.response
+          ? `${error.response.data.message} (Status code: ${error.response.status})`
+          : "Network error occurred. Please try again later.";
       }
     },
     resetForm() {
-      this.fullName = '';
-      this.email = '';
-      this.password = '';
-      this.birthDate = '';
-      this.gender = '';
-      this.phoneNumber = '';
+      this.username = "";
+      this.firstName = "";
+      this.lastName = "";
+      this.email = "";
+      this.password = "";
+      this.phoneNumber = "";
       this.emailError = false;
       this.phoneError = false;
-      this.errorMessage = '';
+      this.errorMessage = "";
     },
   },
 };
 </script>
+
+
+
+
+
 
 <style scoped>
 /* Contenedor de toda la página */
